@@ -1,20 +1,34 @@
 package com.ronaldo.gestao_estoque.resources;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ronaldo.gestao_estoque.entities.Usuario;
+import com.ronaldo.gestao_estoque.services.UsuarioService;
 
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioResource {
 	
+	@Autowired
+	private UsuarioService service;
+	
 	@GetMapping
-	public ResponseEntity<Usuario> findAll() {
-		Usuario u1 = new Usuario(1L, "SHIFT CONSULTORIA E SISTEMAS");
-		return ResponseEntity.ok().body(u1);
+	public ResponseEntity<List<Usuario>> findAll() {
+		List<Usuario> list = service.findAll();
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Usuario> findById(@PathVariable Long id){
+		Usuario obj = service.findById(id);
+		return ResponseEntity.ok().body(obj);
 	}
 
 }
